@@ -35,8 +35,22 @@ const Index = () => {
               </Button>
             </VStack>
           </form>
+          {entries.length > 0 && (
+            <>
+              <Heading as="h2" size="lg" mt={8} mb={4}>
+                Recent Entries
+              </Heading>
+              {entries.slice(-3).map((entry) => (
+                <Box key={entry.id} mb={4}>
+                  <Text fontWeight="bold">{entry.date}</Text>
+                  <Text>{entry.text}</Text>
+                  <Divider my={2} />
+                </Box>
+              ))}
+            </>
+          )}
           <Button mt={8} colorScheme="teal" onClick={() => setViewEntries(true)} leftIcon={<FaBook />}>
-            View Entries
+            View All Entries
           </Button>
         </>
       ) : (
