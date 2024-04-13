@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, Container, Heading, Input, Textarea, VStack, Text, Divider, useColorMode } from "@chakra-ui/react";
 import { FaSun, FaMoon } from "react-icons/fa";
-import { FaPlus, FaBook } from "react-icons/fa";
+import { FaPlus, FaBook, FaUndo } from "react-icons/fa";
 
 const Index = () => {
   const [entry, setEntry] = useState("");
@@ -9,6 +9,7 @@ const Index = () => {
     const storedEntries = localStorage.getItem("journalEntries");
     return storedEntries ? JSON.parse(storedEntries) : [];
   });
+  const [previousEntries, setPreviousEntries] = useState(null);
   const [viewEntries, setViewEntries] = useState(false);
 
   useEffect(() => {
@@ -23,12 +24,21 @@ const Index = () => {
         date: new Date().toLocaleDateString(),
         text: entry,
       };
+      setPreviousEntries(entries);
       setEntries((prevEntries) => {
         const updatedEntries = [...prevEntries, newEntry];
         localStorage.setItem("journalEntries", JSON.stringify(updatedEntries));
         return updatedEntries;
       });
       setEntry("");
+    }
+  };
+
+  const handleUndo = () => {
+    if (previousEntries) {
+      setEntries(previousEntries);
+      setPreviousEntries(null);
+      localStorage.setItem("journalEntries", JSON.stringify(previousEntries));
     }
   };
 
@@ -69,6 +79,11 @@ const Index = () => {
           <Button mt={8} colorScheme="teal" onClick={() => setViewEntries(true)} leftIcon={<FaBook />}>
             View All Entries
           </Button>
+          {previousEntries && (
+            <Button mt={4} colorScheme="gray" onClick={handleUndo} leftIcon={<FaUndo />}>
+              Undo
+            </Button>
+          )}
         </>
       ) : (
         <>
