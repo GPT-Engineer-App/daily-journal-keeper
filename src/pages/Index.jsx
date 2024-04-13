@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Container, Heading, Input, Textarea, VStack, Text, Divider } from "@chakra-ui/react";
+import { Box, Button, Container, Heading, Input, Textarea, VStack, Text, Divider, useColorMode } from "@chakra-ui/react";
+import { FaSun, FaMoon } from "react-icons/fa";
 import { FaPlus, FaBook } from "react-icons/fa";
 
 const Index = () => {
@@ -31,8 +32,13 @@ const Index = () => {
     }
   };
 
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <Container maxW="container.md" py={8}>
+      <Button onClick={toggleColorMode} mb={4}>
+        {colorMode === "light" ? <FaMoon /> : <FaSun />}
+      </Button>
       {!viewEntries ? (
         <>
           <Heading as="h1" size="xl" textAlign="center" mb={8}>
