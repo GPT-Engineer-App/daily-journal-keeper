@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Container, Heading, Input, Textarea, VStack, Text, Divider } from "@chakra-ui/react";
 import { FaPlus, FaBook } from "react-icons/fa";
 
 const Index = () => {
   const [entry, setEntry] = useState("");
-  const [entries, setEntries] = useState([]);
+  const [entries, setEntries] = useState(() => {
+    const storedEntries = localStorage.getItem("journalEntries");
+    return storedEntries ? JSON.parse(storedEntries) : [];
+  });
   const [viewEntries, setViewEntries] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("journalEntries", JSON.stringify(entries));
+  }, [entries]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,7 +22,11 @@ const Index = () => {
         date: new Date().toLocaleDateString(),
         text: entry,
       };
-      setEntries([...entries, newEntry]);
+      setEntries((prevEntries) => {
+        const updatedEntries = [...prevEntries, newEntry];
+        localStorage.setItem("journalEntries", JSON.stringify(updatedEntries));
+        return updatedEntries;
+      });
       setEntry("");
     }
   };
