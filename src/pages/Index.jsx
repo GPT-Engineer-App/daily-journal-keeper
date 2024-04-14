@@ -51,7 +51,7 @@ const Index = () => {
       </Button>
       {!viewEntries ? (
         <>
-          <Heading as="h1" size="xl" textAlign="center" mb={8}>
+          <Heading as="h1" size="xl" mb={8}>
             Daily Journal
           </Heading>
           <form onSubmit={handleSubmit}>
